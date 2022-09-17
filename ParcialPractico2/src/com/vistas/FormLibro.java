@@ -85,7 +85,7 @@ public class FormLibro extends javax.swing.JInternalFrame {
             for (int i = 0; i < cbAutor.getItemCount(); i++) {
                 String nombreA = cbAutor.getItemAt(i).getValor();
                 if (autor.equals(nombreA)) {
-                    idCategoria = cbAutor.getItemAt(i).getIdAutor();
+                    idAutor = cbAutor.getItemAt(i).getIdAutor();
                 }
             }
             
