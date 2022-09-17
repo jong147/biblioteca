@@ -9,7 +9,8 @@ import com.dao.AutorDAO;
 import com.modelo.Libro;
 import com.modelo.Categoria;
 import com.modelo.Autor;
-import com.utilidades.ComboBoxModel;
+import com.utilidades.ComboBoxCategoria;
+import com.utilidades.ComboBoxAutor;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -29,25 +30,26 @@ public class FormLibro extends javax.swing.JInternalFrame {
     public FormLibro() {
         initComponents();
         comboCategoria();
+        comboAutor();
         llenarTabla();
     }
 
     public void comboCategoria(){
         ArrayList<Categoria> listCategorias = categoriaDAO.mostrarCategoria();
-        DefaultComboBoxModel<ComboBoxModel> modelo = new DefaultComboBoxModel();
+        DefaultComboBoxModel<ComboBoxCategoria> modelo = new DefaultComboBoxModel();
         for (Categoria c : listCategorias){
-        modelo.addElement(new ComboBoxModel(c.getIdCategoria(),c.getNombreCategoria()));
+        modelo.addElement(new ComboBoxCategoria(c.getIdCategoria(),c.getNombreCategoria()));
         }
         cbCategoria.setModel(modelo);
     }
     
     public void comboAutor(){
         ArrayList<Autor> listAutores = autorDAO.mostrarAutor();
-        DefaultComboBoxModel<ComboBoxModel> modelo = new DefaultComboBoxModel();
+        DefaultComboBoxModel<ComboBoxAutor> modelo = new DefaultComboBoxModel();
         for (Autor a : listAutores){
-        modelo.addElement(new ComboBoxModel(a.getIdAutor(),a.getNombreAutor()));
+        modelo.addElement(new ComboBoxAutor(a.getIdAutor(),a.getNombreAutor()));
         }
-        cbCategoria.setModel(modelo);
+        cbAutor.setModel(modelo);
     }
     
     public void llenarTabla(){
@@ -83,7 +85,7 @@ public class FormLibro extends javax.swing.JInternalFrame {
             for (int i = 0; i < cbAutor.getItemCount(); i++) {
                 String nombreA = cbAutor.getItemAt(i).getValor();
                 if (autor.equals(nombreA)) {
-                    idCategoria = cbAutor.getItemAt(i).getCodigo();
+                    idCategoria = cbAutor.getItemAt(i).getIdAutor();
                 }
             }
             
@@ -380,8 +382,8 @@ public class FormLibro extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JComboBox<ComboBoxModel> cbAutor;
-    private javax.swing.JComboBox<ComboBoxModel> cbCategoria;
+    private javax.swing.JComboBox<com.utilidades.ComboBoxAutor> cbAutor;
+    private javax.swing.JComboBox<com.utilidades.ComboBoxCategoria> cbCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

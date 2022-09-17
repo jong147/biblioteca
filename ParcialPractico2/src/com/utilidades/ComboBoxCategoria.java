@@ -9,14 +9,14 @@ package com.utilidades;
  * @author Rogelio Mejía, Kevin Uribe, Jong Yang, Gerson González
  */
 //clase para cargar datos en combobox desde base de datos
-public class ComboBoxModel {
+public class ComboBoxCategoria {
     private int codigo;
     private String valor;
 
-    public ComboBoxModel() {
+    public ComboBoxCategoria() {
     }
 
-    public ComboBoxModel(int codigo, String valor) {
+    public ComboBoxCategoria(int codigo, String valor) {
         this.codigo = codigo;
         this.valor = valor;
     }
