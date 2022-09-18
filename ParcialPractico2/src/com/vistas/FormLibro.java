@@ -38,7 +38,7 @@ public class FormLibro extends javax.swing.JInternalFrame {
         ArrayList<Categoria> listCategorias = categoriaDAO.mostrarCategoria();
         DefaultComboBoxModel<ComboBoxCategoria> modelo = new DefaultComboBoxModel();
         for (Categoria c : listCategorias){
-        modelo.addElement(new ComboBoxCategoria(c.getIdCategoria(),c.getNombreCategoria()));
+        modelo.addElement(new ComboBoxCategoria(c.getIdCategoria(), c.getNombreCategoria()));
         }
         cbCategoria.setModel(modelo);
     }
@@ -47,21 +47,24 @@ public class FormLibro extends javax.swing.JInternalFrame {
         ArrayList<Autor> listAutores = autorDAO.mostrarAutor();
         DefaultComboBoxModel<ComboBoxAutor> modelo = new DefaultComboBoxModel();
         for (Autor a : listAutores){
-        modelo.addElement(new ComboBoxAutor(a.getIdAutor(),a.getNombreAutor()));
+            String value = (a.getNombreAutor()+" "+a.getApellido());
+        modelo.addElement(new ComboBoxAutor(a.getIdAutor(), value));
         }
         cbAutor.setModel(modelo);
     }
     
     public void llenarTabla(){
         ArrayList<Libro> listLibros = libroDAO.mostrarLibro();
-        String[] encabezados = {"Id","Libro","Descripción","Stock","Stock Mínimo","Categoria","Autor"};
+        String[] encabezados = {"Id","Libro","Descripción","Stock","Stock Mínimo","Categoria","Autor", "idAutor", "idCategoria"};
         DefaultTableModel modeloTabla = new DefaultTableModel(null, encabezados);
         for (Libro li: listLibros){
             Object[] data = {li.getIdLibro(),li.getTitulo(),
-            li.getDescripcion(),li.getStock(),li.getStockMinimo(),li.getNombreCategoria(),li.getNombreAutor()};
+            li.getDescripcion(),li.getStock(),li.getStockMinimo(),li.getNombreCategoria(),(li.getNombreAutor()), li.getIdAutor(), li.getIdCategoria()};
             modeloTabla.addRow(data);
             }
         tblLibros.setModel(modeloTabla);
+        tblLibros.removeColumn(tblLibros.getColumnModel().getColumn(8));
+        tblLibros.removeColumn(tblLibros.getColumnModel().getColumn(7));
     }
         
     public Libro capturar(){
@@ -71,23 +74,20 @@ public class FormLibro extends javax.swing.JInternalFrame {
             int stock = Integer.parseInt(txtStock.getText());
             int stockMinimo = Integer.parseInt(txtStockMinimo.getText());
             
-            String categoria = cbCategoria.getSelectedItem().toString();
+            /*String categoria = cbCategoria.getSelectedItem().toString();
             int idCategoria = 0;
             for (int i = 0; i < cbCategoria.getItemCount(); i++) {
                 String nombreC = cbCategoria.getItemAt(i).getValor();
                 if (categoria.equals(nombreC)) {
                     idCategoria = cbCategoria.getItemAt(i).getCodigo();
                 }
-            }
+            }*/
             
-            String autor = cbAutor.getSelectedItem().toString();
-            int idAutor = 0;
-            for (int i = 0; i < cbAutor.getItemCount(); i++) {
-                String nombreA = cbAutor.getItemAt(i).getValor();
-                if (autor.equals(nombreA)) {
-                    idAutor = cbAutor.getItemAt(i).getIdAutor();
-                }
-            }
+            ComboBoxCategoria categ = (ComboBoxCategoria)cbCategoria.getModel().getSelectedItem();
+            Integer idCategoria2 = categ.getCodigo();
+            
+            ComboBoxAutor item = (ComboBoxAutor)cbAutor.getModel().getSelectedItem();
+            Integer idAutor2 = item.getIdAutor();
             
             Libro li = new Libro();
             li.setIdLibro(idLibro);
@@ -95,8 +95,8 @@ public class FormLibro extends javax.swing.JInternalFrame {
             li.setDescripcion(descripcion);
             li.setStock(stock);
             li.setStockMinimo(stockMinimo);
-            li.setIdCategoria(idCategoria);
-            li.setIdAutor(idAutor);
+            li.setIdCategoria(idCategoria2);
+            li.setIdAutor(idAutor2);
             return li;
     }
     
@@ -125,8 +125,12 @@ public class FormLibro extends javax.swing.JInternalFrame {
         txtDescripcion.setText(descripcion);
         txtStock.setText(stock);
         txtStockMinimo.setText(stockMinimo);
-        cbCategoria.getModel().setSelectedItem(nombreCategoria);
-        cbAutor.getModel().setSelectedItem(nombreAutor);
+        
+        ComboBoxCategoria comboCat = new ComboBoxCategoria((Integer)tblLibros.getModel().getValueAt(row, 8), tblLibros.getValueAt(row, 5).toString());
+        cbCategoria.setSelectedItem(comboCat);
+        
+        ComboBoxAutor combo = new ComboBoxAutor((Integer)tblLibros.getModel().getValueAt(row, 7), tblLibros.getValueAt(row, 6).toString());
+        cbAutor.setSelectedItem(combo);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,6 +163,10 @@ public class FormLibro extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Datos Libros");
 
         jLabel1.setText("Codigo");

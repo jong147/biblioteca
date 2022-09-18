@@ -3,22 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package com.vistas;
+
 import com.conexion.Conexion;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.view.JasperViewer;
+
 /**
  *
  * @author Rogelio Mejía, Kevin Uribe, Jong Yang, Gerson González
  */
-public class FormReporteProducto extends javax.swing.JInternalFrame {
+public class FormReporteLibros extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form FormReporteProducto
      */
-    public FormReporteProducto() {
+    public FormReporteLibros() {
         initComponents();
     }
 
@@ -33,19 +35,19 @@ public class FormReporteProducto extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtPrecio = new javax.swing.JTextField();
+        txtAutor = new javax.swing.JTextField();
         btnGenerarReporte = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
         setTitle("Reporte de Productos");
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel1.setText("Reporte donde el Precio sea menor al precio ingresado");
+        jLabel1.setText("ingrese parte del nombre o apellido de autor");
         jLabel1.setToolTipText("");
 
-        jLabel2.setText("Precio $");
-
-        txtPrecio.setText("0");
+        jLabel2.setText("Autor:");
 
         btnGenerarReporte.setBackground(new java.awt.Color(0, 204, 204));
         btnGenerarReporte.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -54,6 +56,11 @@ public class FormReporteProducto extends javax.swing.JInternalFrame {
         btnGenerarReporte.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnGenerarReporteMousePressed(evt);
+            }
+        });
+        btnGenerarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarReporteActionPerformed(evt);
             }
         });
 
@@ -73,17 +80,21 @@ public class FormReporteProducto extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnCerrar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnCerrar)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(26, 26, 26)
-                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGenerarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(62, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(26, 26, 26)
+                                    .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(5, 5, 5)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(294, 294, 294)
+                        .addComponent(btnGenerarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,7 +104,7 @@ public class FormReporteProducto extends javax.swing.JInternalFrame {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGenerarReporte))
                 .addGap(55, 55, 55)
                 .addComponent(btnCerrar)
@@ -104,33 +115,42 @@ public class FormReporteProducto extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarReporteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGenerarReporteMousePressed
+
+        if("".equals(txtAutor.getText().toString())){
+            generarReporte("src/com/reportes/rptNoParam.jrxml", null);
+        }else{
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("author", txtAutor.getText().toString());
+
+            generarReporte("src/com/reportes/rptParam.jrxml", param);
+        }
+        
+    }//GEN-LAST:event_btnGenerarReporteMousePressed
+
+    private void generarReporte(String nombreRPT, Map<String, Object> parametros) {
         Conexion obj = new Conexion();
         JasperReport reporte;
-        Map parametros = new HashMap();
-        double precio = Double.parseDouble(txtPrecio.getText());
-        parametros.put("price", precio);
-        try
-        {
+
+        try {
             obj.conectar();
             //compilar reporte
-            reporte = JasperCompileManager.compileReport("src/com/reportes/rptProductos1.jrxml");
+            reporte = JasperCompileManager.compileReport(nombreRPT);
             //visualizar reporte
             JasperPrint jp = JasperFillManager.fillReport(reporte, parametros, obj.getCon());
             JasperViewer.viewReport(jp, false);
-        }
-        catch (JRException e)
-        {
+        } catch (JRException e) {
             JOptionPane.showMessageDialog(null, "Ocurrió un error" + e.getMessage());
-        }
-        finally
-        {
+        } finally {
             obj.desconectar();
         }
-    }//GEN-LAST:event_btnGenerarReporteMousePressed
-
+    }
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerarReporteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -138,6 +158,6 @@ public class FormReporteProducto extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnGenerarReporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtAutor;
     // End of variables declaration//GEN-END:variables
 }

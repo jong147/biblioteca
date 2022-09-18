@@ -45,7 +45,9 @@ public class LibroDAO extends Conexion {
         ArrayList<Libro> listaLibros = new ArrayList <>();
         try {
             this.conectar();
-            String sql = "SELECT * FROM libro li INNER JOIN categoria c on li.idCategoria=c.idCategoria "
+            String sql = "SELECT li.idLibro, li.titulo, li.descripcion, li.stock, "
+                    + "li.stockMinimo, li.idCategoria, c.nombreCategoria, a.idAutor, "
+                    + "CONCAT(a.nombreAutor, ' ', a.apellido) as nombreAutor FROM libro li INNER JOIN categoria c on li.idCategoria=c.idCategoria "
                 + "INNER JOIN autor a on li.idAutor=a.idAutor";
             PreparedStatement pre = this.getCon().prepareStatement(sql);
             ResultSet rs = pre.executeQuery();

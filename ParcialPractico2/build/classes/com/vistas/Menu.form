@@ -48,14 +48,6 @@
             <Property name="text" type="java.lang.String" value="Reportes"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="menuReportProveedores1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Categor&#xed;as"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuReportProveedores1MousePressed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuReportProductos1">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Libros"/>

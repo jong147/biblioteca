@@ -26,7 +26,7 @@ public class Menu extends javax.swing.JFrame {
     FormCategoria frmCategoria;
     FormAutor frmAutor;
     FormLibro frmProducto;
-    FormReporteProducto frmReporteProducto;
+    FormReporteLibros frmReporteLibros;
     public Menu() {
         initComponents();
         this.setSize(700, 680);
@@ -49,7 +49,6 @@ public class Menu extends javax.swing.JFrame {
         menuAutor = new javax.swing.JMenuItem();
         menuLibro = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        menuReportProveedores1 = new javax.swing.JMenuItem();
         menuReportProductos1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -107,14 +106,6 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu1.setText("Reportes");
 
-        menuReportProveedores1.setText("Categorías");
-        menuReportProveedores1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                menuReportProveedores1MousePressed(evt);
-            }
-        });
-        jMenu1.add(menuReportProveedores1);
-
         menuReportProductos1.setText("Libros");
         menuReportProductos1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -162,40 +153,18 @@ public class Menu extends javax.swing.JFrame {
         frmProducto.setLocation(30,30);
     }//GEN-LAST:event_menuLibroMousePressed
 
-    private void menuReportProveedores1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuReportProveedores1MousePressed
-         Conexion obj = new Conexion();
-         JasperReport reporte;
-         try
-         {
-            obj.conectar();
-            //compilar reporte
-            reporte = JasperCompileManager.compileReport("src/com/reportes/rptProveedores1.jrxml");
-            //visualizar reporte
-            JasperPrint jp = JasperFillManager.fillReport(reporte, null, obj.getCon());
-            JasperViewer.viewReport(jp, false);
-         }
-         catch (JRException e)
-         {
-             JOptionPane.showMessageDialog(null, "Ocurrió un error" + e.getMessage());
-         }
-         finally
-         {
-             obj.desconectar();
-         }
-    }//GEN-LAST:event_menuReportProveedores1MousePressed
-
     private void menuReportProductos1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuReportProductos1MousePressed
-        if (frmReporteProducto == null || frmReporteProducto.isClosed())
+        if (frmReporteLibros == null || frmReporteLibros.isClosed())
         {
-            frmReporteProducto = new FormReporteProducto();
-            desktop.add(frmReporteProducto);
-            frmReporteProducto.setVisible(true);
+            frmReporteLibros = new FormReporteLibros();
+            desktop.add(frmReporteLibros);
+            frmReporteLibros.setVisible(true);
         }
         else
         {
-            frmReporteProducto.setVisible(true);
+            frmReporteLibros.setVisible(true);
         }
-        frmReporteProducto.setLocation(30,30);
+        frmReporteLibros.setLocation(30,30);
     }//GEN-LAST:event_menuReportProductos1MousePressed
 
     private void menuAutorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuAutorMousePressed
@@ -256,7 +225,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCategoria;
     private javax.swing.JMenuItem menuLibro;
     private javax.swing.JMenuItem menuReportProductos1;
-    private javax.swing.JMenuItem menuReportProveedores1;
     private javax.swing.JMenu menuSalir;
     // End of variables declaration//GEN-END:variables
 }

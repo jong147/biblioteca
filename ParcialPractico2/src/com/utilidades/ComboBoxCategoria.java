@@ -4,6 +4,8 @@
  */
 package com.utilidades;
 
+import java.util.Objects;
+
 /**
  *
  * @author Rogelio Mejía, Kevin Uribe, Jong Yang, Gerson González
@@ -39,4 +41,32 @@ public class ComboBoxCategoria {
     
     @Override
     public String toString(){return valor;}
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + this.codigo;
+        hash = 59 * hash + Objects.hashCode(this.valor);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ComboBoxCategoria other = (ComboBoxCategoria) obj;
+        if (this.codigo != other.codigo) {
+            return false;
+        }
+        return Objects.equals(this.valor, other.valor);
+    }
+    
+    
 }
