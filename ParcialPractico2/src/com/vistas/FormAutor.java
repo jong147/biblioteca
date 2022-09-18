@@ -58,9 +58,9 @@ public class FormAutor extends javax.swing.JInternalFrame {
     {
     int row = tblAutor.getSelectedRow();
     txtIdAutor.setText(tblAutor.getValueAt(row, 0).toString());
-    txtNacionalidad.setText(tblAutor.getValueAt(row, 1).toString());
+    txtNacionalidad.setText(tblAutor.getValueAt(row, 3).toString());
+    txtNombreAutor.setText(tblAutor.getValueAt(row, 1).toString());
     txtApellido.setText(tblAutor.getValueAt(row, 2).toString());
-    txtApellido.setText(tblAutor.getValueAt(row, 3).toString());
     }
     
     /**
