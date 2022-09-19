@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package com.vistas;
+
 import com.dao.LibroDAO;
 import com.dao.CategoriaDAO;
 import com.dao.AutorDAO;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Rogelio Mejía, Kevin Uribe, Jong Yang, Gerson González
@@ -27,6 +29,7 @@ public class FormLibro extends javax.swing.JInternalFrame {
     CategoriaDAO categoriaDAO = new CategoriaDAO();
     AutorDAO autorDAO = new AutorDAO();
     LibroDAO libroDAO = new LibroDAO();
+
     public FormLibro() {
         initComponents();
         comboCategoria();
@@ -34,47 +37,47 @@ public class FormLibro extends javax.swing.JInternalFrame {
         llenarTabla();
     }
 
-    public void comboCategoria(){
+    public void comboCategoria() {
         ArrayList<Categoria> listCategorias = categoriaDAO.mostrarCategoria();
         DefaultComboBoxModel<ComboBoxCategoria> modelo = new DefaultComboBoxModel();
-        for (Categoria c : listCategorias){
-        modelo.addElement(new ComboBoxCategoria(c.getIdCategoria(), c.getNombreCategoria()));
+        for (Categoria c : listCategorias) {
+            modelo.addElement(new ComboBoxCategoria(c.getIdCategoria(), c.getNombreCategoria()));
         }
         cbCategoria.setModel(modelo);
     }
-    
-    public void comboAutor(){
+
+    public void comboAutor() {
         ArrayList<Autor> listAutores = autorDAO.mostrarAutor();
         DefaultComboBoxModel<ComboBoxAutor> modelo = new DefaultComboBoxModel();
-        for (Autor a : listAutores){
-            String value = (a.getNombreAutor()+" "+a.getApellido());
-        modelo.addElement(new ComboBoxAutor(a.getIdAutor(), value));
+        for (Autor a : listAutores) {
+            String value = (a.getNombreAutor() + " " + a.getApellido());
+            modelo.addElement(new ComboBoxAutor(a.getIdAutor(), value));
         }
         cbAutor.setModel(modelo);
     }
-    
-    public void llenarTabla(){
+
+    public void llenarTabla() {
         ArrayList<Libro> listLibros = libroDAO.mostrarLibro();
-        String[] encabezados = {"Id","Libro","Descripción","Stock","Stock Mínimo","Categoria","Autor", "idAutor", "idCategoria"};
+        String[] encabezados = {"Id", "Libro", "Descripción", "Stock", "Stock Mínimo", "Categoria", "Autor", "idAutor", "idCategoria"};
         DefaultTableModel modeloTabla = new DefaultTableModel(null, encabezados);
-        for (Libro li: listLibros){
-            Object[] data = {li.getIdLibro(),li.getTitulo(),
-            li.getDescripcion(),li.getStock(),li.getStockMinimo(),li.getNombreCategoria(),(li.getNombreAutor()), li.getIdAutor(), li.getIdCategoria()};
+        for (Libro li : listLibros) {
+            Object[] data = {li.getIdLibro(), li.getTitulo(),
+                li.getDescripcion(), li.getStock(), li.getStockMinimo(), li.getNombreCategoria(), (li.getNombreAutor()), li.getIdAutor(), li.getIdCategoria()};
             modeloTabla.addRow(data);
-            }
+        }
         tblLibros.setModel(modeloTabla);
         tblLibros.removeColumn(tblLibros.getColumnModel().getColumn(8));
         tblLibros.removeColumn(tblLibros.getColumnModel().getColumn(7));
     }
-        
-    public Libro capturar(){
-            int idLibro = Integer.parseInt(txtIdLibro.getText());
-            String titulo = txtTitulo.getText();
-            String descripcion = txtDescripcion.getText();
-            int stock = Integer.parseInt(txtStock.getText());
-            int stockMinimo = Integer.parseInt(txtStockMinimo.getText());
-            
-            /*String categoria = cbCategoria.getSelectedItem().toString();
+
+    public Libro capturar() {
+        int idLibro = Integer.parseInt(txtIdLibro.getText());
+        String titulo = txtTitulo.getText();
+        String descripcion = txtDescripcion.getText();
+        int stock = Integer.parseInt(txtStock.getText());
+        int stockMinimo = Integer.parseInt(txtStockMinimo.getText());
+
+        /*String categoria = cbCategoria.getSelectedItem().toString();
             int idCategoria = 0;
             for (int i = 0; i < cbCategoria.getItemCount(); i++) {
                 String nombreC = cbCategoria.getItemAt(i).getValor();
@@ -82,25 +85,24 @@ public class FormLibro extends javax.swing.JInternalFrame {
                     idCategoria = cbCategoria.getItemAt(i).getCodigo();
                 }
             }*/
-            
-            ComboBoxCategoria categ = (ComboBoxCategoria)cbCategoria.getModel().getSelectedItem();
-            Integer idCategoria2 = categ.getCodigo();
-            
-            ComboBoxAutor item = (ComboBoxAutor)cbAutor.getModel().getSelectedItem();
-            Integer idAutor2 = item.getIdAutor();
-            
-            Libro li = new Libro();
-            li.setIdLibro(idLibro);
-            li.setTitulo(titulo);
-            li.setDescripcion(descripcion);
-            li.setStock(stock);
-            li.setStockMinimo(stockMinimo);
-            li.setIdCategoria(idCategoria2);
-            li.setIdAutor(idAutor2);
-            return li;
+        ComboBoxCategoria categ = (ComboBoxCategoria) cbCategoria.getModel().getSelectedItem();
+        Integer idCategoria2 = categ.getCodigo();
+
+        ComboBoxAutor item = (ComboBoxAutor) cbAutor.getModel().getSelectedItem();
+        Integer idAutor2 = item.getIdAutor();
+
+        Libro li = new Libro();
+        li.setIdLibro(idLibro);
+        li.setTitulo(titulo);
+        li.setDescripcion(descripcion);
+        li.setStock(stock);
+        li.setStockMinimo(stockMinimo);
+        li.setIdCategoria(idCategoria2);
+        li.setIdAutor(idAutor2);
+        return li;
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         txtIdLibro.setText("0");
         txtTitulo.setText("");
         txtDescripcion.setText("");
@@ -109,8 +111,8 @@ public class FormLibro extends javax.swing.JInternalFrame {
         cbCategoria.setSelectedIndex(0);
         cbAutor.setSelectedIndex(0);
     }
-    
-    public void llenarFormulario(){
+
+    public void llenarFormulario() {
         int row = tblLibros.getSelectedRow();
         String idLibro = tblLibros.getValueAt(row, 0).toString();
         String titulo = tblLibros.getValueAt(row, 1).toString();
@@ -119,19 +121,20 @@ public class FormLibro extends javax.swing.JInternalFrame {
         String stockMinimo = tblLibros.getValueAt(row, 4).toString();
         String nombreCategoria = tblLibros.getValueAt(row, 5).toString();
         String nombreAutor = tblLibros.getValueAt(row, 6).toString();
-        
+
         txtIdLibro.setText(idLibro);
         txtTitulo.setText(titulo);
         txtDescripcion.setText(descripcion);
         txtStock.setText(stock);
         txtStockMinimo.setText(stockMinimo);
-        
-        ComboBoxCategoria comboCat = new ComboBoxCategoria((Integer)tblLibros.getModel().getValueAt(row, 8), tblLibros.getValueAt(row, 5).toString());
+
+        ComboBoxCategoria comboCat = new ComboBoxCategoria((Integer) tblLibros.getModel().getValueAt(row, 8), tblLibros.getValueAt(row, 5).toString());
         cbCategoria.setSelectedItem(comboCat);
-        
-        ComboBoxAutor combo = new ComboBoxAutor((Integer)tblLibros.getModel().getValueAt(row, 7), tblLibros.getValueAt(row, 6).toString());
+
+        ComboBoxAutor combo = new ComboBoxAutor((Integer) tblLibros.getModel().getValueAt(row, 7), tblLibros.getValueAt(row, 6).toString());
         cbAutor.setSelectedItem(combo);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -339,24 +342,40 @@ public class FormLibro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCerrarMouseClicked
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        int res = libroDAO.insertarLibro(capturar());
-        if (res!=0) {
-            JOptionPane.showMessageDialog(null, "Se agregó el libro exitosamente.");
-            llenarTabla();
-            limpiar();
+        if ("".equals(txtTitulo.getText().toString())
+                || "".equals(txtStock.getText().toString())
+                || "".equals(txtStockMinimo.getText().toString())
+                || "".equals(txtDescripcion.getText().toString())) {
+            JOptionPane.showMessageDialog(null, "Llene todos los campos", "Informacion", 1);
+
+        } else {
+            int res = libroDAO.insertarLibro(capturar());
+            if (res != 0) {
+                JOptionPane.showMessageDialog(null, "Se agregó el libro exitosamente.");
+                llenarTabla();
+                limpiar();
+            }
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-         if (tblLibros.getSelectedRow() != -1) {//verificar si se ha seleccionado
-            int res = libroDAO.modificarLibro(capturar());
-            if (res != 0) {
-                JOptionPane.showMessageDialog(null, "Se modificó el libro exitosamente.");
-                llenarTabla();
-                limpiar();
+        if ("".equals(txtTitulo.getText().toString())
+                || "".equals(txtStock.getText().toString())
+                || "".equals(txtStockMinimo.getText().toString())
+                || "".equals(txtDescripcion.getText().toString())) {
+            JOptionPane.showMessageDialog(null, "Llene todos los campos", "Informacion", 1);
+
+        } else {
+            if (tblLibros.getSelectedRow() != -1) {//verificar si se ha seleccionado
+                int res = libroDAO.modificarLibro(capturar());
+                if (res != 0) {
+                    JOptionPane.showMessageDialog(null, "Se modificó el libro exitosamente.");
+                    llenarTabla();
+                    limpiar();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione una fila para modificar");
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Seleccione una fila para modificar");
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -371,7 +390,7 @@ public class FormLibro extends javax.swing.JInternalFrame {
                     limpiar();
                 }
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Seleccione una fila para eliminar");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed

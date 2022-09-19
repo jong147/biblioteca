@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/vistas/Menu.java</file>
             <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/vistas/FormLibro.java</file>
-            <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/utilidades/ComboBoxCategoria.java</file>
-            <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/utilidades/ComboBoxAutor.java</file>
-            <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/dao/LibroDAO.java</file>
-            <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/dao/AutorDAO.java</file>
+            <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/vistas/FormAutor.java</file>
+            <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/vistas/FormCategoria.java</file>
+            <file>file:/C:/Repositories/biblioteca/ParcialPractico2/src/com/vistas/FormReporteLibros.java</file>
         </group>
     </open-files>
 </project-private>

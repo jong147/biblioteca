@@ -10,6 +10,7 @@ import com.modelo.Categoria;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Rogelio Mejía, Kevin Uribe, Jong Yang, Gerson González
@@ -20,14 +21,15 @@ public class FormCategoria extends javax.swing.JInternalFrame {
      * Creates new form FormCategoria
      */
     CategoriaDAO categoriaDAO = new CategoriaDAO();
+
     public FormCategoria() {
         initComponents();
         llenarTabla();
     }
-    
-    public void llenarTabla(){
-    ArrayList<Categoria> listCategorias = categoriaDAO.mostrarCategoria();
-        String[] encabezados = {"Id","Nombre","Descripción"};
+
+    public void llenarTabla() {
+        ArrayList<Categoria> listCategorias = categoriaDAO.mostrarCategoria();
+        String[] encabezados = {"Id", "Nombre", "Descripción"};
         DefaultTableModel modeloTabla = new DefaultTableModel(null, encabezados);
         for (Categoria datos : listCategorias) {
             Object[] data = {datos.getIdCategoria(), datos.getNombreCategoria(), datos.getDescripcion()};
@@ -36,30 +38,27 @@ public class FormCategoria extends javax.swing.JInternalFrame {
         tblCategoria.setModel(modeloTabla);
     }
 
-    public void limpiarForm()
-    {
+    public void limpiarForm() {
         txtIdCategoria.setText("0");
         txtNombreCategoria.setText("");
         txtDescripcion.setText("");
     }
-    
-    public Categoria capturarDatos()
-    {
-    int idCategoria = Integer.parseInt(txtIdCategoria.getText());
-    String nombreCategoria = txtNombreCategoria.getText();
-    String descripcion = txtDescripcion.getText();
-    Categoria c = new Categoria(idCategoria, nombreCategoria, descripcion);
-    return c;
+
+    public Categoria capturarDatos() {
+        int idCategoria = Integer.parseInt(txtIdCategoria.getText());
+        String nombreCategoria = txtNombreCategoria.getText();
+        String descripcion = txtDescripcion.getText();
+        Categoria c = new Categoria(idCategoria, nombreCategoria, descripcion);
+        return c;
     }
-    
-    public void llenarFormulario()
-    {
-    int row = tblCategoria.getSelectedRow();
-    txtIdCategoria.setText(tblCategoria.getValueAt(row, 0).toString());
-    txtNombreCategoria.setText(tblCategoria.getValueAt(row, 1).toString());
-    txtDescripcion.setText(tblCategoria.getValueAt(row, 2).toString());
+
+    public void llenarFormulario() {
+        int row = tblCategoria.getSelectedRow();
+        txtIdCategoria.setText(tblCategoria.getValueAt(row, 0).toString());
+        txtNombreCategoria.setText(tblCategoria.getValueAt(row, 1).toString());
+        txtDescripcion.setText(tblCategoria.getValueAt(row, 2).toString());
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,19 +206,25 @@ public class FormCategoria extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        if (tblCategoria.getSelectedRow() != -1) {
-            int res = categoriaDAO.modificarCategoria(capturarDatos());
-            if (res == 1) {
-                JOptionPane.showMessageDialog(null, "Categoría actualizada");
-                llenarTabla();
-                limpiarForm();
+        if ("".equals(txtNombreCategoria.getText().toString())
+                || "".equals(txtDescripcion.getText().toString())) {
+            JOptionPane.showMessageDialog(null, "Llene todos los campos", "Informacion", 1);
+
+        } else {
+            if (tblCategoria.getSelectedRow() != -1) {
+                int res = categoriaDAO.modificarCategoria(capturarDatos());
+                if (res == 1) {
+                    JOptionPane.showMessageDialog(null, "Categoría actualizada");
+                    llenarTabla();
+                    limpiarForm();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione una fila para modificar");
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Seleccione una fila para modificar");
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -234,7 +239,7 @@ public class FormCategoria extends javax.swing.JInternalFrame {
                     limpiarForm();
                 }
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Seleccione una fila para eliminar");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -244,11 +249,17 @@ public class FormCategoria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblCategoriaMouseClicked
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
-        int res = categoriaDAO.insertarCategoria(capturarDatos());
-        if (res == 1) {
-            JOptionPane.showMessageDialog(null, "Categoría registrada");
-            llenarTabla();
-            limpiarForm();
+        if ("".equals(txtNombreCategoria.getText().toString())
+                || "".equals(txtDescripcion.getText().toString())) {
+            JOptionPane.showMessageDialog(null, "Llene todos los campos", "Informacion", 1);
+
+        } else {
+            int res = categoriaDAO.insertarCategoria(capturarDatos());
+            if (res == 1) {
+                JOptionPane.showMessageDialog(null, "Categoría registrada");
+                llenarTabla();
+                limpiarForm();
+            }
         }
     }//GEN-LAST:event_btnAgregarMouseClicked
 

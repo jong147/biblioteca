@@ -10,6 +10,7 @@ import com.modelo.Autor;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Rogelio Mejía, Kevin Uribe, Jong Yang, Gerson González
@@ -20,13 +21,14 @@ public class FormAutor extends javax.swing.JInternalFrame {
      * Creates new form FormAutor
      */
     AutorDAO autorDAO = new AutorDAO();
+
     public FormAutor() {
         initComponents();
         llenarTabla();
     }
-    
-    public void llenarTabla(){
-    ArrayList<Autor> listAutores = autorDAO.mostrarAutor();
+
+    public void llenarTabla() {
+        ArrayList<Autor> listAutores = autorDAO.mostrarAutor();
         String[] encabezados = {"Id", "Nombre", "Apellido", "Nacionalidad"};
         DefaultTableModel modeloTabla = new DefaultTableModel(null, encabezados);
         for (Autor datos : listAutores) {
@@ -36,33 +38,32 @@ public class FormAutor extends javax.swing.JInternalFrame {
         tblAutor.setModel(modeloTabla);
     }
 
-    public void limpiarForm()
-    {
+    public void limpiarForm() {
         txtIdAutor.setText("0");
         txtNombreAutor.setText("");
         txtApellido.setText("");
         txtNacionalidad.setText("");
     }
-    
-    public Autor capturarDatos()
-    {
-    int codigo = Integer.parseInt(txtIdAutor.getText());
-    String nombreAutor = txtNombreAutor.getText();
-    String apellido = txtApellido.getText();
-    String nacionalidad = txtNacionalidad.getText();
-    Autor p = new Autor(codigo, nombreAutor, apellido, nacionalidad);
-    return p;
+
+    public Autor capturarDatos() {
+        int codigo = Integer.parseInt(txtIdAutor.getText());
+        String nombreAutor = txtNombreAutor.getText();
+        String apellido = txtApellido.getText();
+        String nacionalidad = txtNacionalidad.getText();
+
+        Autor p = new Autor(codigo, nombreAutor, apellido, nacionalidad);
+        return p;
+
     }
-    
-    public void llenarFormulario()
-    {
-    int row = tblAutor.getSelectedRow();
-    txtIdAutor.setText(tblAutor.getValueAt(row, 0).toString());
-    txtNacionalidad.setText(tblAutor.getValueAt(row, 3).toString());
-    txtNombreAutor.setText(tblAutor.getValueAt(row, 1).toString());
-    txtApellido.setText(tblAutor.getValueAt(row, 2).toString());
+
+    public void llenarFormulario() {
+        int row = tblAutor.getSelectedRow();
+        txtIdAutor.setText(tblAutor.getValueAt(row, 0).toString());
+        txtNacionalidad.setText(tblAutor.getValueAt(row, 3).toString());
+        txtNombreAutor.setText(tblAutor.getValueAt(row, 1).toString());
+        txtApellido.setText(tblAutor.getValueAt(row, 2).toString());
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -214,23 +215,32 @@ public class FormAutor extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        if (tblAutor.getSelectedRow() != -1) {
-            int res = autorDAO.modificarAutor(capturarDatos());
-            if (res == 1) {
-                JOptionPane.showMessageDialog(null, "Autor actualizado");
-                llenarTabla();
-                limpiarForm();
+        if ("".equals(txtNombreAutor.getText().toString())
+                || "".equals(txtApellido.getText().toString())
+                || "".equals(txtNacionalidad.getText().toString())) {
+            JOptionPane.showMessageDialog(null, "Llene todos los campos", "Informacion", 1);
+
+        } else {
+
+            if (tblAutor.getSelectedRow() != -1) {
+                int res = autorDAO.modificarAutor(capturarDatos());
+                if (res == 1) {
+                    JOptionPane.showMessageDialog(null, "Autor actualizado");
+                    llenarTabla();
+                    limpiarForm();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione una fila para modificar");
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Seleccione una fila para modificar");
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+
         if (tblAutor.getSelectedRow() != -1) {//verificar si se ha seleccionado
             int resp = JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar?", "Eliminar registro", 0);
             if (JOptionPane.OK_OPTION == resp) {
@@ -241,9 +251,10 @@ public class FormAutor extends javax.swing.JInternalFrame {
                     limpiarForm();
                 }
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Seleccione una fila para eliminar");
         }
+
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void tblAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAutorMouseClicked
@@ -251,11 +262,18 @@ public class FormAutor extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblAutorMouseClicked
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
-        int res = autorDAO.insertarAutor(capturarDatos());
-        if (res == 1) {
-            JOptionPane.showMessageDialog(null, "Autor registrado");
-            llenarTabla();
-            limpiarForm();
+        if ("".equals(txtNombreAutor.getText().toString())
+                || "".equals(txtApellido.getText().toString())
+                || "".equals(txtNacionalidad.getText().toString())) {
+            JOptionPane.showMessageDialog(null, "Llene todos los campos", "Informacion", 1);
+
+        } else {
+            int res = autorDAO.insertarAutor(capturarDatos());
+            if (res == 1) {
+                JOptionPane.showMessageDialog(null, "Autor registrado");
+                llenarTabla();
+                limpiarForm();
+            }
         }
     }//GEN-LAST:event_btnAgregarMouseClicked
 
